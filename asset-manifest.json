@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/thimira20011/the-reuse-hub-v2.git/static/css/main.34ba4267.css",
+    "main.js": "/thimira20011/the-reuse-hub-v2.git/static/js/main.a19d2731.js",
+    "static/js/453.3650190a.chunk.js": "/thimira20011/the-reuse-hub-v2.git/static/js/453.3650190a.chunk.js",
+    "index.html": "/thimira20011/the-reuse-hub-v2.git/index.html",
+    "main.34ba4267.css.map": "/thimira20011/the-reuse-hub-v2.git/static/css/main.34ba4267.css.map",
+    "main.a19d2731.js.map": "/thimira20011/the-reuse-hub-v2.git/static/js/main.a19d2731.js.map",
+    "453.3650190a.chunk.js.map": "/thimira20011/the-reuse-hub-v2.git/static/js/453.3650190a.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.34ba4267.css",
+    "static/js/main.a19d2731.js"
+  ]
+}
