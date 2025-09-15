@@ -7,6 +7,101 @@ import { motion, AnimatePresence } from 'framer-motion';
 // Create Firebase Context
 const FirebaseContext = createContext();
 
+// Admin configuration
+const ADMIN_USER_IDS = [
+  '6tfCQELYHQcGXuP49RRtexIGoMk1', // Your admin user ID
+  // Add more admin user IDs here as needed
+];
+
+// Admin Access Control Hook
+const useAdminAccess = () => {
+  const { userId, db } = useContext(FirebaseContext);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [adminCheckLoading, setAdminCheckLoading] = useState(true);
+
+  useEffect(() => {
+    const checkAdminAccess = async () => {
+      if (!userId) {
+        setIsAdmin(false);
+        setAdminCheckLoading(false);
+        return;
+      }
+
+      // First check hardcoded admin IDs
+      if (ADMIN_USER_IDS.includes(userId)) {
+        setIsAdmin(true);
+        setAdminCheckLoading(false);
+        return;
+      }
+
+      // Check Firestore for user role (optional - for future expansion)
+      if (db) {
+        try {
+          const userRoleDoc = await getDoc(doc(db, 'userRoles', userId));
+          if (userRoleDoc.exists() && userRoleDoc.data().role === 'admin') {
+            setIsAdmin(true);
+          } else {
+            setIsAdmin(false);
+          }
+        } catch (error) {
+          console.log('Error checking user role in Firestore:', error);
+          setIsAdmin(false);
+        }
+      } else {
+        setIsAdmin(false);
+      }
+      
+      setAdminCheckLoading(false);
+    };
+
+    checkAdminAccess();
+  }, [userId, db]);
+
+  return { isAdmin, adminCheckLoading };
+};
+
+// Admin Guard Component
+const AdminGuard = ({ children }) => {
+  const { isAdmin, adminCheckLoading } = useAdminAccess();
+  const { showMessage } = useContext(FirebaseContext);
+
+  useEffect(() => {
+    if (!adminCheckLoading && !isAdmin) {
+      showMessage('Access Denied: You do not have administrator privileges.', 'error');
+    }
+  }, [isAdmin, adminCheckLoading, showMessage]);
+
+  if (adminCheckLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center p-8">
+        <LoadingSpinner />
+        <p className="text-white mt-4 text-lg">Verifying admin access...</p>
+      </div>
+    );
+  }
+
+  if (!isAdmin) {
+    return (
+      <div className="flex flex-col items-center justify-center p-8 text-center">
+        <div className="bg-red-600 p-6 rounded-xl shadow-lg max-w-md">
+          <svg className="w-16 h-16 text-white mb-4 mx-auto" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-5-5 1.41-1.41L11 14.17l7.59-7.59L20 8l-9 9z"/>
+          </svg>
+          <h2 className="text-2xl font-bold text-white mb-4">Access Denied</h2>
+          <p className="text-white mb-4">
+            You do not have administrator privileges to access this page.
+          </p>
+          <p className="text-red-200 text-sm">
+            Contact your system administrator if you believe this is an error.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  return children;
+};
+
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -757,6 +852,7 @@ const AdminPanel = () => {
 const App = () => {
   const [currentPage, setCurrentPage] = useState('home');
   const { userId, loadingFirebase } = useContext(FirebaseContext);
+  const { isAdmin, adminCheckLoading } = useAdminAccess();
 
   const navigate = (page) => {
     setCurrentPage(page);
@@ -794,7 +890,11 @@ const App = () => {
       case 'inventory':
         return <Inventory />;
       case 'admin':
-        return <AdminPanel />;
+        return (
+          <AdminGuard>
+            <AdminPanel />
+          </AdminGuard>
+        );
       default:
         return <Home navigate={navigate} />;
     }
@@ -838,14 +938,17 @@ const App = () => {
             >
               Inventory
             </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => navigate('admin')}
-              className={`px-4 py-2 rounded-full font-medium transition-colors duration-200 ${currentPage === 'admin' ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-200 hover:bg-gray-600'}`}
-            >
-              Admin
-            </motion.button>
+            {/* Only show Admin button if user is admin */}
+            {!adminCheckLoading && isAdmin && (
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => navigate('admin')}
+                className={`px-4 py-2 rounded-full font-medium transition-colors duration-200 ${currentPage === 'admin' ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-200 hover:bg-gray-600'}`}
+              >
+                Admin
+              </motion.button>
+            )}
           </div>
         </nav>
       </header>
