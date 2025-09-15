@@ -2,7 +2,7 @@
   "name": "reuse-hub",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://github.com/thimira20011/the-reuse-hub-v2.git",
+  "homepage": "https://thimira20011.github.io/the-reuse-hub-v2",
   "dependencies": {
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.7.0",
