@@ -9,7 +9,7 @@ const FirebaseContext = createContext();
 
 // Admin configuration
 const ADMIN_USER_IDS = [
-  '6tfCQELYHQcGXuP49RRtexIGoMk1', // Your admin user ID
+  '6tfCQELYHQcGXuP49RRtexIGoMk1', 'z5eu1gtDldVRXghpq62wPWx2xSQ2'// Your admin user ID
   // Add more admin user IDs here as needed
 ];
 
