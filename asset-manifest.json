@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/the-reuse-hub-v2/static/css/main.34ba4267.css",
-    "main.js": "/the-reuse-hub-v2/static/js/main.a3f6e237.js",
+    "main.css": "/the-reuse-hub-v2/static/css/main.f520fc6e.css",
+    "main.js": "/the-reuse-hub-v2/static/js/main.0534d986.js",
     "static/js/453.3650190a.chunk.js": "/the-reuse-hub-v2/static/js/453.3650190a.chunk.js",
     "index.html": "/the-reuse-hub-v2/index.html",
-    "main.34ba4267.css.map": "/the-reuse-hub-v2/static/css/main.34ba4267.css.map",
-    "main.a3f6e237.js.map": "/the-reuse-hub-v2/static/js/main.a3f6e237.js.map",
+    "main.f520fc6e.css.map": "/the-reuse-hub-v2/static/css/main.f520fc6e.css.map",
+    "main.0534d986.js.map": "/the-reuse-hub-v2/static/js/main.0534d986.js.map",
     "453.3650190a.chunk.js.map": "/the-reuse-hub-v2/static/js/453.3650190a.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.34ba4267.css",
-    "static/js/main.a3f6e237.js"
+    "static/css/main.f520fc6e.css",
+    "static/js/main.0534d986.js"
   ]
 }
